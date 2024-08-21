@@ -1,0 +1,2848 @@
+<!DOCTYPE html>
+<!-- 手机16px 电脑12px-->
+<html>
+
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>背包_商品评论区</title>
+    <style type="text/css">
+
+    @media screen and (max-width: 1600px){
+      div{
+        width: 85%;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      /*说明页样式*/
+      .instruction{
+        display: flex;
+        font-size: 80%;
+        margin: 0.8em auto;
+        margin-top: 0;
+        background-color: rgba(245,245,245);
+        width: 85%; 
+        flex-flow: column wrap;
+        text-align: left;
+      }
+      .experiment{
+        display: flex;
+        margin: 0.8em auto;
+        margin-top: 0;
+        border: solid #ccc 0.075em;
+        box-shadow: 1px 1px rgba(245,245,245);
+        width: 85%; 
+        flex-flow: column wrap;
+        text-align: left;
+      }
+      .details{
+        display: flex;
+        flex-flow: row wrap;
+        align-content: flex-start;
+      }
+      table{
+        display: block;
+        width: 59%;
+        table-layout: auto;
+      }
+      td{
+        font-size: 80%;
+        line-height: 1.5em;
+      }
+      .img-container{
+        width: 40%;
+        padding-right: 1%;
+      }
+      .img-container img {
+        width: 100%;
+        height: auto;
+      }
+      .tag{
+        /*flex-shrink: 0;*/
+        margin: 0.25em;
+        padding: 0.45em 0.6em;
+        /*width: 5em;*/
+        line-height: 1.5em;
+        border: solid #696969 0.075em;
+        border-radius: 1em;
+        font-size: 0.8em;
+        text-align: center;
+        background-color: rgba(255,255,255);
+        color:  #696969;
+      } 
+    }
+
+    @media screen and (max-width: 800px){
+      div{
+        width: 95%;
+        margin: 0 auto;
+        text-align: center;
+      }
+
+      /*说明页样式*/
+      .instruction{
+        display: flex;
+        font-size: 80%;
+        margin: 0.8em auto;
+        margin-top: 0;
+        background-color: rgba(245,245,245);
+        width: 95%; 
+        flex-flow: column wrap;
+        text-align: left;
+      }
+      .experiment{
+        display: flex;
+        margin: 0.8em auto;
+        margin-top: 0;
+        border: solid #ccc 0.075em;
+        box-shadow: 1px 1px rgba(245,245,245);
+        width: 95%; 
+        flex-flow: column wrap;
+        text-align: left;
+      }
+      .details{
+        display: flex;
+        flex-flow: row wrap;
+        align-content: flex-start;
+      }
+      table{
+        display: block;
+        width: 90%;
+        margin: 1em auto;
+        table-layout: auto;
+      }
+      td{
+        font-size: 80%;
+        line-height: 1.5em;
+      }
+      .img-container{
+        width: 80%;
+        padding-right: 1%;
+      }
+      .img-container img {
+        width: 100%;
+        height: auto;
+      }
+      .tag{
+        /*flex-shrink: 0;*/
+        margin: 0.15em;
+        padding: 0.45em 0.6em;
+        /*width: 5em;*/
+        line-height: 1.5em;
+        border: solid #696969 0.075em;
+        border-radius: 1em;
+        font-size: 0.7em;
+        text-align: center;
+        background-color: rgba(255,255,255);
+        color:  #696969;
+      } 
+    }
+   
+
+      /*上一页和下一页、切换设置*/
+      #nextBtn,#prevBtn{
+        background-color: rgba(245,245,245);
+        border: 1px solid rgba(217,217,217);
+        text-decoration: none;
+        color: #333;
+        padding: 0.5em 1.5em;
+        margin: 0.5em 1em;
+      }
+      #nextBtn:hover,#prevBtn:hover {
+        /*background-color: #ccc;*/
+        color: rgba(225,50,50);
+        cursor: pointer;
+      }
+      .page {
+        display: none;
+      }
+      .page.active {
+        display: block;
+      }
+      .transition {
+        transition: transform 1s ease;
+      }    
+
+      /*标签样式*/
+      #box{
+        height: 35%;
+        display: flex;
+        flex-wrap: wrap;
+        /*justify-content: flex-start;*/
+        /*align-items: center;*/
+        align-content: center;
+        padding-top: 1em; 
+        padding-bottom: 0.5em;
+      }
+/*      .tag{
+        margin: 0.2em;
+        padding: 0.5em 0.6em;
+        line-height: 1.5em;
+        border: solid #696969 0.075em;
+        border-radius: 1em;
+        font-size: 0.7em;
+        text-align: center;
+        background-color: rgba(255,255,255);
+        color:  #696969;
+      }*/
+      .tag.neg{
+        border-color:rgba(169,169,169);
+        color:rgba(169,169,169);
+      }       
+      .tag:hover {
+        cursor: pointer;
+        color: black;
+        text-shadow: 0.2px 0.2px 0.2px #ccc;
+        box-shadow:  0.2px 0.2px 0.2px #ccc;
+      }         
+      .tag.active{
+        border: solid rgba(225,50,50) 0.12em;
+        color: rgba(225,50,50);
+      }
+      .tag.neg.active{
+        border: solid green 0.12em;
+        color: green;
+      }
+     
+      /*tag点击显示样式*/
+      .content{
+        display: none;
+      } 
+      .content.show{
+        display:block;  
+      }
+
+      /*灰色导航条样式（不可点击）*/
+      #top{
+        height: 30%;
+        margin: auto;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+      }      
+      .center{
+        margin: 0.5em;
+        text-align: center;
+        font-size: 0.7em;
+        color: black;
+        /*color: #696969;*/
+      }
+
+      /*评论样式*/
+      .reviews{
+        display: flex;
+        font-size: 0.85em;
+        text-align: left;
+        padding-top: 0.8em;
+        padding-bottom: 0.8em;
+        /*border-bottom: rgba(217,217,217) solid 0.1em;*/
+        background-color: rgba(245,245,245);
+        margin: 0.5em auto;
+      }
+      .customer{
+        display: flex;
+        flex-flow:column nowrap;
+        padding-left: 1em;
+        padding-right: 1.5em;
+        /*align-items:center;*/
+        align-items: flex-start；
+      }
+      img{
+        margin-left: 0.6em;
+        width: 2.5em;
+        height:2.5em;
+      }
+      .rvw{
+        flex:1;
+        background-color: rgba(255,255,255);
+        border-radius: 10px;
+        padding: 1em;
+        margin-right: 1.5em;
+      }
+
+      /*下方省略样式*/
+      .bottom{
+        display: flex;
+        font-size: 75%;
+        margin: 0.6em auto;
+        padding: 0.6em 0;
+        background-color: rgba(245,245,245);
+        text-align: center;
+        color: #ccc;
+        flex-direction: column;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <div class="page">
+      <div class="instruction">
+        <div style="width:90%;margin: 0 auto; text-align: left;"> 
+          <h3 style="text-align: center;">消费者对标签摘要系统使用意愿调研</h3>
+          <p>尊敬的先生/女士：</p>
+          <p style="text-indent:2em;">
+          您好！感谢您抽出宝贵的时间参与本实验！这是一项关于“消费者对电商平台的标签摘要系统的使用意愿调研”的实验：您将先浏览网页，再完成一份问卷。问卷采用匿名方式作答，您的答案将完全保密，仅作为本次学术研究使用，请您放心填写！ </p>
+          <p style="text-indent:2em;">
+          为了确保作答的有效性，请您仔细浏览网页展示内容，实验将预计花费您2-5分钟的时间，衷心感谢您的理解和配合！ </p> 
+        </div> 
+      </div>
+      <div class="experiment">
+        <div style=" width:90%; margin: 0 auto; text-align: left;">
+          <p>
+          想象你正在某个电商平台为自己选购一款背包。在挑选过程中，你看到了某款双肩包，它的基本信息如下：
+          </p>
+        </div>
+        <div class="details">
+          <div class="img-container">
+            <img src="backpack.jpg">
+          </div>            
+          <table>
+            <tr>
+              <td colspan="2" align="left" valign="top" style="font-size: 100%;"><b>新款时尚大容量双肩包 商务旅行户外背包书包电脑包</b></td>
+            </tr>
+            <tr>
+              <td align="left" valign="top" style="width: 25%;">价格</td>
+              <td align="left" valign="top">149</td>
+            </tr>
+            <tr>
+              <td align="left" valign="top" >配送</td>
+              <td align="left" valign="top">快递&nbsp;免运费 <br> 现货，付款后48小时内发货</td>
+            </tr>
+            <tr>
+              <td align="left" valign="top" >颜色分类</td>
+              <td align="left" valign="top"><img src="bpcolor.png" style="max-width:100%; max-height: 100; width: auto; height: auto;"></td>
+            </tr>            
+          </table>
+          <div style="padding-top: 1em; padding-bottom: 1em; border-top: 0.2em solid rgba(245,245,245);">
+            <table style="display: table; table-layout: fixed; width: 90%;">
+              <tr>
+                <td align="left" valign="center" style="width: 50%;">质地：尼龙布</td>
+                <td align="left" valign="center" style="width: 50%;">闭合方式：拉链</td>
+              </tr>
+              <tr>
+                <td align="left" valign="center">肩带样式：双根</td>
+                <td align="left" valign="center">形状：竖款方形</td>
+              </tr>
+              <tr>
+                <td align="left" valign="center">成色：全新</td>
+                <td align="left" valign="center">容纳电脑尺寸：15英寸</td>
+              </tr>
+              <tr>
+                <td align="left" valign="center">风格：日韩</td>
+                <td align="left" valign="center">内部结构：电脑插袋</td>
+              </tr>
+              <tr>
+                <td align="left" valign="center">适用场景：休闲</td>
+                <td align="left" valign="center">是否可折叠：是</td>
+              </tr>
+              <tr>
+                <td align="left" valign="center">箱包硬度：软</td>
+                <td align="left" valign="center">有无夹层：有</td>
+              </tr>
+              <tr>
+                <td align="left" valign="center">流行元素：印花</td>
+                <td align="left" valign="center">大小：大</td>
+              </tr>
+              <tr>
+                <td align="left" valign="center">是否有背部缓冲棉：是</td>
+                <td align="left" valign="center">箱包外袋种类：立体袋</td>
+              </tr>              
+              <tr>
+                <td align="left" valign="center">提拎部件类型：软把</td>
+                <td align="left" valign="center">尺寸：44x31x15cm</td>
+              </tr>              
+              <tr>
+                <td align="left" valign="center">防水程度：防泼水</td>
+                <td align="left" valign="center">里料材质：涤纶</td>
+              </tr>                                                                                    
+            </table>
+          </div>
+        </div>
+      </div>
+      <button id="nextBtn" >下一页</button>
+    </div>
+
+    <div class="page">
+      <button id="prevBtn" >上一页</button>
+      <span class="instruction" style="background-color: rgba(253,245,230); border-radius: 0.5em; border: dotted rgba(139,0,0) 0.1em;">
+        <span style="width:90%; margin: 0 auto;">
+          <p>注：本页面为商品评论区，仅下方<b>评论标签可以点击</b>。</p>
+          <p>请您仔细浏览评论与标签，这与问卷的问题相关。浏览完毕后请点击此处的<a href="https://www.credamo.com/s/Yb6V73ano/" style="font-size: 120%">问卷链接</a>并填写！</p> 
+        </span>
+      </span> 
+      <div id="box">
+        <button class="tag">
+          容量很大(35)
+        </button>
+        <button class="tag">
+          做工很好(33)
+        </button>
+        <button class="tag">
+          设计好看(26)
+        </button>
+        <button class="tag">
+          功能齐全(18)
+        </button>
+        <button class="tag">
+          结实耐用(25)
+        </button>
+        <button class="tag">
+          防水性强(19)
+        </button>
+        <button class="tag">
+          款型极佳(11)
+        </button>
+        <button class="tag neg">
+          性价比低(7)
+        </button>
+        <!-- 174 -->
+      </div>
+
+      <div id="top">
+        <span class="center">
+          全部评价(200+)
+        </span>
+        <span class="center">
+          好评(200+)
+        </span>
+        <span class="center">
+          中评(2)
+        </span>
+        <span class="center">
+          差评(4)
+        </span>
+      </div>
+
+      <!-- 全部评论  -->
+      <div class="content show">
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            我***西
+          </span>
+          <span class="rvw">买了两个都很好，大人小孩都可以背，质量非常好。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            韩***g
+          </span>
+          <span class="rvw">容量挺大，面料材质一般，平时外出携带物品够用，还行。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            醉***0
+          </span>
+          <span class="rvw">好看，是我想要的样子，料子是那种滑滑的，整个包蛮大的，整体不错</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            陈***辉
+          </span>
+          <span class="rvw">中等大小，容量可以，肩带有厚度，承重是可以的，军绿色这个颜色也挺喜欢的，满意。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             小***熙
+          </span>
+          <span class="rvw">背包质量不错，面料做工都很精致，容量挺能装的。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             深***鱼
+          </span>
+          <span class="rvw">背起来还行，功能比较全。外观一般，不够商务</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             书***你
+          </span>
+          <span class="rvw">很好看的小包给女朋友买的她喜欢 里面还有小口袋正好能放下一个平板还蛮能装的 不错好评了希望店家能点赞</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             华***南
+          </span>
+          <span class="rvw">包包容量很大，也好看，但是感觉布料质量有点配不上这个价格，摸起来比较粗糙，贵了，谨慎购买</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             周***户
+          </span>
+          <span class="rvw">没想到很有型，做工样式没得说，功能强大，居然配有独立洗漱包（小的包好像是😶），虽然不是机车男，但是出差游玩够用确实好看</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             棉***善
+          </span>
+          <span class="rvw">背包很轻便，容量也不小，保温杯可以装下还能装点其他的，送了三个胸针，布料应该是防水的吧，还没测试过，内里还有一个小拉链，唯一可惜的是是两侧都有拉链，背在背后出去游玩确实没有安全感，怕被偷钱包，只有自己到时候谨慎一些了</span>
+        </span>
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             微***毛
+          </span>
+          <span class="rvw">很惊喜的背包！包本身很轻，容量也不小，背面是软的背着舒适。拉链质感很好，侧边拉链还在适应中哈哈取东西还挺方便。很喜欢！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             将***范
+          </span>
+          <span class="rvw">健身用的，容量够大，方便使用，面料柔软细腻，做工精细没有线头，设计的小口袋也够用</span>
+        </span> 
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            若***谷
+          </span>
+          <span class="rvw">背包的面料防水的，质量看着还可以</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            彩***8
+          </span>
+          <span class="rvw">很实用，空间很大，布料是防水的，出门用很方便</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            喜***姐
+          </span>
+          <span class="rvw">容量真的很大，还可以有充电孔，背着也很舒服，外面是防水材质，质量真的很好，颜值真的很高，物流真的很给力，昨天拍今天就到了</span>
+        </span>                                     
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            名***玛
+          </span>
+          <span class="rvw">特意买来国庆旅游的，在白色跟黑色之间犹豫了一瞬最后还是买了相对耐脏的黑色，包包容量蛮大的，有小夹层，包包两边放水杯的格袋也有，放东西也很方便，刚到手的时候双肩包还有点塌，后面塞了点东西调了下双肩包的背带挺了点也有点型，背起来真的有丶体育生运动风内味儿！！还很酷！！！总得来说还算不错！！！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            热***包
+          </span>
+          <span class="rvw">包很好看的，米白色很美。而且空间是真的很大，总共有五六个隔层，装书和各种证件啊什么的完全是够的。很喜欢，不错。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            米***圈
+          </span>
+          <span class="rvw">很喜欢的一种双肩包，材料是那种光滑面的，我买的看起来小，但很能装，出门的时候平常用的东西都能装，喜欢喜欢，客服态度也很好，很有耐心</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            优***行
+          </span>
+          <span class="rvw">双侧都有拉链，里面有个小暗袋有拉链。很轻便，面料也很舒服，没有异味。大概能装下自动伞一把，矿泉水两瓶，和其他一些零碎。空间还是可以的。属于小巧又能装类型，出门短途背着挺合适。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            记***子
+          </span>
+          <span class="rvw">这个包还是总体还说挺好用的，空间够大，前面可以放个篮球，后面的隔层可以放电脑，确实爽，质量还是挺不错的，大家放心冲吧，物有所值</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            郝***佳
+          </span>
+          <span class="rvw">功能设计很齐全，想得也很很齐全，可以干湿分离，侧面的袋子放容易洒出来的水和湿的雨伞一点问题都没有！内袋里面也有一个隔离层可以干湿分离，在干湿分离和功能齐全方面可谓做到极致了，但是，真的空包背起来就很大了。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            徐***0
+          </span>
+          <span class="rvw">这个包百元左右性价无敌 做工 外观 隔位 都超级好 布料摸着很舒服 干湿分离区 左右两侧可以放杯子和雨伞 都有保温层 肩带厚实 背着舒服不累 空间的话也很能装 短途旅行或出差必备 强烈推荐</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            卤***条
+          </span>
+          <span class="rvw">功能齐全容量大，很适合城市通勤。就是背带再舒服点就好了，面料稍微有点滑~</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            平***u
+          </span>
+          <span class="rvw">功能划分比较丰富，出差要带笔记本应该会比较好用，送货很快，早上买晚上就送到了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            王***惠
+          </span>
+          <span class="rvw">能装，口袋多，功能多，干湿分离，隔温层口袋，做工可以，价格还实惠，值得推荐。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            抱***灭
+          </span>
+          <span class="rvw">背包的功能很多，有好多分仓，笔记本电脑可以单独存放，还有保护棉。放衣服的有3层，干净和换洗的可以分开存放。眼镜盒，水杯，雨伞都可以单独存放。最外面还有个小的，可以放些票据。非常棒。。</span>
+        </span>                                        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            爱***虫
+          </span>
+          <span class="rvw">外观看着很好 功能比较全面，暂时还没有用，使用后看效果</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            公***y
+          </span>
+          <span class="rvw">挺好用的，最外面一层容量非常大放两个快递盒都可以，另外两层不是很大，但是够日常使用了，放电脑的夹层做了一定的缓冲保护。寄来有一点异味，放了一两天就可以正常使用了，目前用着没什么问题。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            陈***8
+          </span>
+          <span class="rvw">背包手感不错，挺结实的，没发现线头，容量大，分格多，功能齐全，两边放水杯还保温，短期出差一个这背包就够了</span>
+        </span>
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            平***念
+          </span>
+          <span class="rvw">收到宝贝了，适合初中生，蓝色很耐看满意，容量大，隔层多肯定能满足学生党，至于防水或者洗后变不变形不知，孩子很喜欢，好评！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            龙***5
+          </span>
+          <span class="rvw">质量厚实，颜色无色差的，看着很耐用的样子，料子不错。容量大！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***n
+          </span>
+          <span class="rvw">挺好看的，感觉个人特别喜欢，所以给了5颗好星</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            来***汤
+          </span>
+          <span class="rvw">我很喜欢这个设计 商品质量不错，细节、品质、做工都非常好，发货贼快，快递也给力，棒棒哒~</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            浅***田
+          </span>
+          <span class="rvw">容量很大，我买的是大号蓝色的，没有色差。做工很精致，没有线头并且宽式也很好看，真心推荐。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            天***晴
+          </span>
+          <span class="rvw">质量特别出乎意料的好，像帆布那种防雨的，一点也不显得廉价，这个颜色和款式孩子自己选了很多家对比，第一次发货因快递原因，卖家第一时间就重新补发啦，这样诚信店家一定可以做的更好。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            陈***i
+          </span>
+          <span class="rvw">质量不错，而且买的17寸的也挺大的，装17的笔记本没问题，还能装好多衣服之类的。短途出差很OK，做工也很不错，这个价位很值的。推荐购买。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            墨***靥
+          </span>
+          <span class="rvw">做工精细，质量不错，空间也大，作为通勤包虽然买大了一号，不过也不违和，至少以后随身能带着运动鞋去上班了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            郭***3
+          </span>
+          <span class="rvw">这个包用料很扎实，分层很多，放东西应该比较方便，两边还有防水的袋子可以拿来装水杯，就是因为用料比较扎实，所以自重重一点，这一点买的时候要考虑好</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            刘***4
+          </span>
+          <span class="rvw">包还不错，不过就价格而言，性价比一般！</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            我***啦
+          </span>
+          <span class="rvw">还可以还可以，包包比较耐看，比较结实。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            楽***-
+          </span>
+          <span class="rvw">不错挺帅的，包装还挺结实的。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            宁***挞
+          </span>
+          <span class="rvw">虽然有点贵吧。不过还是喜欢这样的设计。里面的用料也比较结实。特别是那层网。不会轻易破</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            兮***呀
+          </span>
+          <span class="rvw">喜欢这个包！很大很好用！很结实！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            赚***光
+          </span>
+          <span class="rvw">没有想像中好，物不所值</span>
+        </span>
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            真***嗒
+          </span>
+          <span class="rvw">很厚实，电脑装进去不怕磕碰，背带连接处很结实，没有多余的线头，没有什么气味，拉链很丝滑</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            绍***希
+          </span>
+          <span class="rvw">第二次购买，我自己买的那个黑色用了很久了，这回给我弟也整一个，使用感特别好肩带很结实质量超级nice，而且面料很耐脏好清理不需要清洗，湿巾擦拭就好了，容量也足够（来自我弟一个高三生的认可）</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            二***酱
+          </span>
+          <span class="rvw">这个包包是真的好，面料结实耐磨，质量特别好，容量很大，夏季衣服没问题！外观挺好看的，纯色简约大方百搭，包包特别有质感，摸起来很舒服，做工挺精细，设计很人性化，材料和做工都特别精致，做工真的非常棒，我觉着我可以推荐给我朋友买</span>
+        </span>          
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            张***松
+          </span>
+          <span class="rvw">收到这个背包之后真的很惊喜，做工很精美，材质很舒服，买了一个小容量的，出行放手机之类的刚刚好。拉链是在侧边，两侧都有，拿取东西，很方便，设计很喜欢！</span>
+        </span>                          
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            萨***3
+          </span>
+          <span class="rvw">背包质量很好！就是买的这个尺寸有点太大了，正常背的话小号就行。容量当然是非常大的，能够装特别多东西，书包整体厚厚的，不过没有放行李箱上固定的带子。米白色很好看，就是容易脏，吃饭溅上油了呜呜呜。</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            z***宝
+          </span>
+          <span class="rvw">面料材质：尼龙<br>款式设计：运动<br>容量大小：大，可以放下A4<br>品质做工：无线头，比较细致<br>整体来说我个人很喜欢，能装下大学英语书（大学算最大的书了）这点很满意，他是那种扁扁的那种包，对于一个学生来说虽然小贵，但是还是挺值的，我觉得可以放心冲</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            心***f
+          </span>
+          <span class="rvw">款式好看，材质很好，容量很大，做工精细，喜欢</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            z***雪
+          </span>
+          <span class="rvw">好用，轻便，放书很多面料不错设计很好与介绍一样。<br>面料材质：结实<br>款式设计：好看好看<br>容量大小：大<br>品质做工：很好没线头</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            相***业
+          </span>
+          <span class="rvw">包包有质感，做功精细防水！能装很多东西，很喜欢！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            x***6
+          </span>
+          <span class="rvw">做工不错，没发现什么瑕疵。放个14寸电脑刚刚好。希望能耐用一点。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            打***膜
+          </span>
+          <span class="rvw">面料厚实，做工精致，很结实，肩带加宽加厚，书本多了也不勒肩，贼喜欢</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***3
+          </span>
+          <span class="rvw">做工质量不错，好评</span>
+        </span>                                
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            月***清
+          </span>
+          <span class="rvw">不太值这个价，调节绳有点长了，不太方便调，防水效果也不是很好</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            宁***陌
+          </span>
+          <span class="rvw">书包质量很好，款式好看，容量大，很能装，性价比很高，值得购买</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            假***人
+          </span>
+          <span class="rvw">很不错，买的小号担心买小了，结果背起来很合适，好多内袋和隔层，容量杠杠的，质量也没得说</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            黄***梗
+          </span>
+          <span class="rvw">感觉蛮好的，刚收到还没背，容量挺大的，设计也不错，等背了之后有什么再说吧。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***5
+          </span>
+          <span class="rvw">容量真的很大！！！如果是上学背建议买小号，旅行包的话你不带行李箱就买大号，有带行李箱就买小号</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            范***范
+          </span>
+          <span class="rvw">质量没的说很不错 小号书包就已经很能装了 有很多夹层放东西 很实用性价比很高</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            黄***1
+          </span>
+          <span class="rvw">这质量我也没法说了，连50的书包也不如</span>
+        </span>          
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            暴***生
+          </span>
+          <span class="rvw">空间大，款型好看，功能性拉满。很喜欢</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***7
+          </span>
+          <span class="rvw">好用，空间够大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            为***名
+          </span>
+          <span class="rvw">拉链稍微有点小，空间很大，确认能放进16寸的电脑，打开后也没有什么异味，性价比很高的书包。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            明***鏌
+          </span>
+          <span class="rvw">这个背包自重挺大的，容量也是非常大的，包的五金材料质量很好，看着就不错，布料这些的材质也是很好的，很有厚重感，大小可以和一个小的行李箱比较了，装多一些的东西没问题。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            落***风
+          </span>
+          <span class="rvw">很大很能装</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             风***k
+          </span>
+          <span class="rvw">容量比较大，做了很多分区，每个物品都有相对应的位置，拿取方便，不会忘了自己放那里了！相当不错！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             古***病
+          </span>
+          <span class="rvw">个人感觉颜值不错，空间足够使用，很人性化，是否经久耐用还需要用一段时间再看。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             w***8
+          </span>
+          <span class="rvw">包做工不错，看着很漂亮，外出钓鱼用的，容量够大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             血***满
+          </span>
+          <span class="rvw">背了几天了，包包的质量蛮好的，里面的空间也足够，装我的笔记本等配件，出差的换洗内衣没得问题。满意。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+              钢***2
+          </span>
+          <span class="rvw">质量非常好，容量很大。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             久***凉
+          </span>
+          <span class="rvw">容量大小：整体来说还行，包容量比较大。<br>做工细节：包内隔层比较多，设计的比较实用，但唯一缺点是隔层袋无拉链。<br>舒适度：背起来还不错，刚使用几天，后面追评。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+              彭***H
+          </span>
+          <span class="rvw">不错，包包结实，背着很舒服。内部空间很大，多个间隔。</span>
+        </span>
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            请***乐
+          </span>
+          <span class="rvw">双肩包很好，颜色也很好看，容量也够大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            张***松
+          </span>
+          <span class="rvw">白色的很小清新，很好看，给媳妇背的单母婴包是带点帆布的，感觉近距离看远距离看的话还挺好看，入眼看的话感觉有点像米白色，没有那么白</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            蒲***1
+          </span>
+          <span class="rvw">白色很漂亮，不是很白的颜色，是比较米白的颜色，重量很轻，容量大，可以装下很多东西，几十块的书包有这种质量真的很好，下次还买</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            回***空
+          </span>
+          <span class="rvw">样式很好看哦，如果前面两个带子可以固定一下就更完美了。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            逄***臻
+          </span>
+          <span class="rvw">发货快，质量很好，款式时尚大方，颜色正，背起来很好看</span>
+        </span>
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            茶***东
+          </span>
+          <span class="rvw">比想象的更好，更高档，每一处都很完美，口袋很多。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            池***笙
+          </span>
+          <span class="rvw">设计确实很OK 质感满满</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            寒***明
+          </span>
+          <span class="rvw">挺好的，大小宽厚刚合适，虽然看着不是很大，但挺能装东西，而且装完之后也没有鼓鼓囊囊的感觉，挺有型的</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            沃***兰
+          </span>
+          <span class="rvw">双肩包很好看，看着很有质感，拎着很有档次，颜色也很漂亮，老公很喜欢，好评！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            昕***贝
+          </span>
+          <span class="rvw">颜值很高，手感很好，只是12.9的pad带套之后放不进第二隔层。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            不***期
+          </span>
+          <span class="rvw">包很好看，也实用，可以放手提，出外两三天背这个刚刚好。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            呼***力
+          </span>
+          <span class="rvw">包包很帅气很好看，质量非常好，容量特大能装开大课本出乎我的意料，包装非常仔细，还送了小徽章！非常感谢，祝生意兴隆！！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***E
+          </span>
+          <span class="rvw">这个背包手感很好很轻，颜值高，买来作为员工活动奖品。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            番***付
+          </span>
+          <span class="rvw">太好看了，性价比超高</span>
+        </span>
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             l***4
+          </span>
+          <span class="rvw">挺实用的，容量很大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             A***C
+          </span>
+          <span class="rvw">新换的书包，容量超级大，除了平时上班的时候背着以外，主要是带家里小朋友出去玩背小朋友的东西，相当于母婴包了，非常的不错，而且背着也很舒服，感觉不太重！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             他***屋
+          </span>
+          <span class="rvw">书包看起来还不错，空间很大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             觅***z
+          </span>
+          <span class="rvw">面料材质：太棒了 滑滑防水面料很舒服 款式设计：时尚 容量大小：容量大很喜欢 品质做工：品质精细</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             我***剑
+          </span>
+          <span class="rvw">包可以装很多东西 袋子也很深 摸起来很舒服</span>
+        </span>
+
+
+
+
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            r***油
+          </span>
+          <span class="rvw">儿子看了很喜欢，质量很棒 做工还是比较细致的。就是物流过程有小插曲 不过商家很快解决了。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***3
+          </span>
+          <span class="rvw">品质做工：做工很好，比想象中的大好多，拉链也很顺畅</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            u***2
+          </span>
+          <span class="rvw">做工精细，质量不错，空间也大，作为通勤包虽然买大了一号，不过也不违和，至少以后随身能带着运动鞋去上班了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             j***c
+          </span>
+          <span class="rvw">书包挺漂亮，大小正合适</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***f
+          </span>
+          <span class="rvw">做工精细，没有多余线头，看得出做工很下功夫，无论材质还是拉链、内层都做的很好，包整体看上去很有质感，休闲又商务，出差两三天用这个包完全够。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             j***运
+          </span>
+          <span class="rvw">感觉包包质量很好，做工精细，款式简约大方，平整很漂亮，用一用再来评价</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            1***8
+          </span>
+          <span class="rvw">缓震海绵更好的保护电脑，细节很到位，满意，下次还会光顾的哈</span>
+        </span>
+
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            握***8
+          </span>
+          <span class="rvw">包容量大，做工细致，分了几个口袋，便于收纳放物品，性价比不错</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***m
+          </span>
+          <span class="rvw">质量很好，拉链顺滑做工精细</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            乡***鸡
+          </span>
+          <span class="rvw">好起来质感还不错，比较厚实，应该是能防水<br>细节处理的很好，很细致，很有质感，这个价格很值了，给老公买的他也喜欢，值得推荐</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            张***哥
+          </span>
+          <span class="rvw">细节到位，质地柔软，实用！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            秦***关
+          </span>
+          <span class="rvw">产品与描述基本相符，手感不错，做工细致，没发现有线头</span>
+        </span>                                             
+
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             吴***逆
+          </span>
+          <span class="rvw">款式商务好看，做工扎实，好评</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            熊***大
+          </span>
+          <span class="rvw">空间不如想象那么大，但是还可以。作为电脑包足够了。质量，做工都很好。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            s***9
+          </span>
+          <span class="rvw">包包做工精细，面料很厚，尺寸大小正合适，外观简约大方，客服回复很快，很奈斯啊 背起来好好看 质量也不错 是有点麻布袋的质感 但是摸起来并不会有颗粒感 值得入手</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            L***2
+          </span>
+          <span class="rvw">做工精细、容量大，手感舒服，非常不错。</span>
+        </span>   
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            焰***尘
+          </span>
+          <span class="rvw">特别好真的很好看哈哈哈哈哈</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             此***在
+          </span>
+          <span class="rvw">背包的样式还比较耐看的，质量的话需要背一段时间来检验了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            明***下
+          </span>
+          <span class="rvw">质量和价格不符，第一次背，拉链就开了</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            止***儿
+          </span>
+          <span class="rvw">孩子自己挑的款式，很好看。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             W***丶
+          </span>
+          <span class="rvw">挺好，就是夏天背着有点热，做工还可以，侧兜太浅了，装水杯和雨伞动作大点容易掉，希望改进吧。<br>外观颜值：挺好</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            缘***1
+          </span>
+          <span class="rvw">包包很好看，像个1000块钱的</span>
+        </span>                                        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            夏***梦
+          </span>
+          <span class="rvw">非常好，背包很高大上，质量很好，之前买了一个送给了哥哥背，哥哥非常喜欢，我也很喜欢，所以就又买了一个，给弟弟质量不错，少有线头，容量也很大，很适合学生党，旅游党。看上去就给人一种高级感，价格也合适，这次网购很愉快，大赞</span>
+        </span>                                                                
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            凌***风
+          </span>
+          <span class="rvw">背包很好看，背起来很舒适，唯一缺点就是扣子太多了，每次不扣会很强迫症给他扣起来了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            第***明
+          </span>
+          <span class="rvw">真不错，也不贵，还挺好看的</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            因***4
+          </span>
+          <span class="rvw">外观好看、大气。书包很结实，夹层和口袋多而不乱，背重物比较轻松。留有usb接口和电脑夹层，分门别类非常方便。使用一周后感觉很好，性价比很高。</span>
+        </span>                
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            曾***3
+          </span>
+          <span class="rvw">两年前买过一次 这个包 很结实 背着也很舒服</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            w***1
+          </span>
+          <span class="rvw">包很好，皮实耐用，就是比原来的包小了点，建议选大号的</span>
+        </span>             
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            我***西
+          </span>
+          <span class="rvw">很棒很棒，本来觉得有点丑，但到手真香了，嘿嘿嘿，比图片上好看，多功能背包，不会太大颜值高，背电脑没问题</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             4***航
+          </span>
+          <span class="rvw">背着舒服，该有的功能全用上了，方便好用。空间也很大，能装几套衣服，加一双鞋，还有随时用的小东西，口袋多，也不怕东西装得乱七八糟，装东西分开装，找东西就很好找</span>
+        </span>
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            记***子
+          </span>
+          <span class="rvw">背包空间很大，不同区域划分的也很多，很能装。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            晨***递
+          </span>
+          <span class="rvw">很完美的背包了，该有的功能全都有，甚至还给配了一条数据线用于连接充电宝的。完美😍</span>
+        </span> 
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***c
+          </span>
+          <span class="rvw">很时尚，功能多。缺陷是太重了</span>
+        </span>                                 
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            勇***羊
+          </span>
+          <span class="rvw">方便携带，也还算结实，收纳也很方便。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             夹***唐
+          </span>
+          <span class="rvw">背包很结实，装的东西很多。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            爱***乐
+          </span>
+          <span class="rvw">质感不错，还防水 淋着雨回来里面都是干的</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            橙***汁
+          </span>
+          <span class="rvw">收到货了，很好，大小刚刚好，简洁大气，款式很有简约，是我喜欢的样子，包包很精致，防水面料，布料是防水的，终于买到一款自己喜欢的包包啦，很棒哦</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***鱼
+          </span>
+          <span class="rvw">背包做工精致，面料防水，背带加宽设计，背着舒服。三层设计，外出携带东西可以分类存放。外观漂亮，容量较大，另有USB外部插口，方便充电。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            g***i
+          </span>
+          <span class="rvw">做工精细，布料结实耐用，小件用料扎实，是正品。非常能装，不显大，30斤东西背上去感觉很轻快。</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            R***p
+          </span>
+          <span class="rvw">质感非常好，分区明确还防水，性价比高</span>
+        </span>          
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***7
+          </span>
+          <span class="rvw">还不错，感觉很结实。也能装东西</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            佛***佩
+          </span>
+          <span class="rvw">很好用，主要是比较牢固，相信能用很长时间</span>
+        </span>                
+
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            M***o
+          </span>
+          <span class="rvw">背包口袋很多很结实。</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            玥***8
+          </span>
+          <span class="rvw">包包外观和内分是符合想法和要求，装电脑后面有厚厚的减震扛摔设计，还能装一些几天出差的衣服，那个USB口还不知如何用，最后就看带子连接出老实不，会不会开线或开胶。暂时满意满意！</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            大***爸
+          </span>
+          <span class="rvw">收到的书包面料很结实！这个容量大小完全够用。没有线头，面料是防水的尼龙的材料！ 背着很是时尚好看！超级满意!</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***y
+          </span>
+          <span class="rvw">包包很结实，很实用，挺好的</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            酱***啊
+          </span>
+          <span class="rvw">容量大特别能装，耐用，不容易脏</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            0***0
+          </span>
+          <span class="rvw">快递包装很好，用了2层包装袋。书包里面分了很多层，便于放不同的东西，有一个专门的笔记本电脑层，很方便。书包布料很好很结实，背着合身，使用了三周，体验很好。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            岭***雁
+          </span>
+          <span class="rvw">这个包设计非常合理，具有多层结构。特别贴心的装眼镜和电脑的地方都是绒布保护。中间可以完全平放打开，侧面带有保温层，并且防水。整体做工非常结实。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            灰***谱
+          </span>
+          <span class="rvw">质感不错，能装下挺多东西，还防水。已经背了半个多月了，就是里面异味有点大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            瓜***3
+          </span>
+          <span class="rvw">同事推荐，平时出差使用，包很能装，而且可以防泼溅，下雨也不害怕，前前后后买了3个，还送了鞋套和杯套，外观纯黑还蛮酷的，不错</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            木***由
+          </span>
+          <span class="rvw">非常好，放水，背起来舒服</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            z***9
+          </span>
+          <span class="rvw">容量大小：书包空间比较大，很好用<br>实用性能：防水性能给力</span>
+        </span>                        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             孔***7
+          </span>
+          <span class="rvw">背包外观好看，功能多样，内有隔层防水性好</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            常***霸
+          </span>
+          <span class="rvw">容量大小：大小基本够用吧，平时当个通勤包很不错<br>做工细节：做工没的说，面料应该是比较耐刮防水的，蹭脏了用湿毛巾擦一下就好了<br>外观颜值：颜值是真的喜欢，很板正<br>实用性能：磁吸卡扣点个赞</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            强***冲
+          </span>
+          <span class="rvw">价格太高 根本不值这个价 布料很差 容量还小</span>
+        </span>           
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            暮***风
+          </span>
+          <span class="rvw">书包很好用，容量很大，还防水。</span>
+        </span>     
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            风***由
+          </span>
+          <span class="rvw">想买的别犹豫哇！没有廉价的感觉，很高端，特别棒！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             j***林
+          </span>
+          <span class="rvw">质感不错挺好的。还有usb口。方便使用。包不塌。挺阔有型。</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***H
+          </span>
+          <span class="rvw">面料防水效果好，摸着感觉很结实耐用，孩子自己挑的这款，容量很大，初中带的书都够放的，肩带加宽设计，背着不勒，肩带的手提都有加固，很结实，两侧有设计可以放水壶雨伞的侧口袋，有抽绳可固定，对于书本多的学生来说，真的是很实用，总之，很满意的一次购物</span>
+        </span>   
+
+        <span class="bottom">没有更多啦~</span>                                                           
+      </div>
+
+      <!-- tag1 容量很大 35 -->
+      <div class="content">
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            韩***g
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">容量挺大</span>，面料材质一般，平时外出携带物品够用，还行。</span>
+        </span>      
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            陈***辉
+          </span>
+          <span class="rvw">中等大小，<span style="color: rgba(210,105,30); ">容量可以</span>，肩带有厚度，承重是可以的，军绿色这个颜色也挺喜欢的，满意。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             棉***善
+          </span>
+          <span class="rvw">背包很轻便，<span style="color: rgba(210,105,30); ">容量也不小</span>，保温杯可以装下还能装点其他的，送了三个胸针，布料应该是防水的吧，还没测试过，内里还有一个小拉链，唯一可惜的是是两侧都有拉链，背在背后出去游玩确实没有安全感，怕被偷钱包，只有自己到时候谨慎一些了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             微***毛
+          </span>
+          <span class="rvw">很惊喜的背包！包本身很轻，<span style="color: rgba(210,105,30); ">容量也不小</span>，背面是软的背着舒适。拉链质感很好，侧边拉链还在适应中哈哈取东西还挺方便。很喜欢！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             将***范
+          </span>
+          <span class="rvw">健身用的，<span style="color: rgba(210,105,30); ">容量够大</span>，方便使用，面料柔软细腻，做工精细没有线头，设计的小口袋也够用</span>
+        </span>                              
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            名***玛
+          </span>
+          <span class="rvw">特意买来国庆旅游的，在白色跟黑色之间犹豫了一瞬最后还是买了相对耐脏的黑色，<span style="color: rgba(210,105,30); ">包包容量蛮大的</span>，有小夹层，包包两边放水杯的格袋也有，放东西也很方便，刚到手的时候双肩包还有点塌，后面塞了点东西调了下双肩包的背带挺了点也有点型，背起来真的有丶体育生运动风内味儿！！还很酷！！！总得来说还算不错！！！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            热***包
+          </span>
+          <span class="rvw">包很好看的，米白色很美。<span style="color: rgba(210,105,30); ">而且空间是真的很大</span>，总共有五六个隔层，装书和各种证件啊什么的完全是够的。很喜欢，不错。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            米***圈
+          </span>
+          <span class="rvw">很喜欢的一种双肩包，材料是那种光滑面的，我买的看起来小，<span style="color: rgba(210,105,30); ">但很能装</span>，出门的时候平常用的东西都能装，喜欢喜欢，客服态度也很好，很有耐心</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            优***行
+          </span>
+          <span class="rvw">双侧都有拉链，里面有个小暗袋有拉链。很轻便，面料也很舒服，没有异味。大概能装下自动伞一把，矿泉水两瓶，和其他一些零碎。<span style="color: rgba(210,105,30); ">空间还是可以的</span>。属于小巧又能装类型，出门短途背着挺合适。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            记***子
+          </span>
+          <span class="rvw">这个包还是总体还说挺好用的，<span style="color: rgba(210,105,30); ">空间够大</span>，前面可以放个篮球，后面的隔层可以放电脑，确实爽，质量还是挺不错的，大家放心冲吧，物有所值</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            平***念
+          </span>
+          <span class="rvw">收到宝贝了，适合初中生，蓝色很耐看满意，<span style="color: rgba(210,105,30); ">容量大</span>，隔层多肯定能满足学生党，至于防水或者洗后变不变形不知，孩子很喜欢，好评！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            龙***5
+          </span>
+          <span class="rvw">质量厚实，颜色无色差的，看着很耐用的样子，料子不错。<span style="color: rgba(210,105,30); ">容量大</span>！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            宁***陌
+          </span>
+          <span class="rvw">书包质量很好，款式好看，<span style="color: rgba(210,105,30); ">容量大，很能装</span>，性价比很高，值得购买</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            假***人
+          </span>
+          <span class="rvw">很不错，买的小号担心买小了，结果背起来很合适，好多内袋和隔层，<span style="color: rgba(210,105,30); ">容量杠杠的</span>，质量也没得说</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            黄***梗
+          </span>
+          <span class="rvw">感觉蛮好的，刚收到还没背，<span style="color: rgba(210,105,30); ">容量挺大的</span>，设计也不错，等背了之后有什么再说吧。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***5
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">容量真的很大</span>！！！如果是上学背建议买小号，旅行包的话你不带行李箱就买大号，有带行李箱就买小号</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            范***范
+          </span>
+          <span class="rvw">质量没的说很不错 <span style="color: rgba(210,105,30); ">小号书包就已经很能装了</span> 有很多夹层放东西 很实用性价比很高</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            暴***生
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">空间大</span>，款型好看，功能性拉满。很喜欢</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            记***子
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">背包空间很大</span>，不同区域划分的也很多，<span style="color: rgba(210,105,30); ">很能装</span>。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***7
+          </span>
+          <span class="rvw">好用，<span style="color: rgba(210,105,30); ">空间够大</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            为***名
+          </span>
+          <span class="rvw">拉链稍微有点小，<span style="color: rgba(210,105,30); ">空间很大</span>，确认能放进16寸的电脑，打开后也没有什么异味，性价比很高的书包。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            明***鏌
+          </span>
+          <span class="rvw">这个背包自重挺大的，<span style="color: rgba(210,105,30); ">容量也是非常大的</span>，包的五金材料质量很好，看着就不错，布料这些的材质也是很好的，很有厚重感，大小可以和一个小的行李箱比较了，装多一些的东西没问题。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            落***风
+          </span>
+          <span class="rvw">很大很能装</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             风***k
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">容量比较大</span>，做了很多分区，每个物品都有相对应的位置，拿取方便，不会忘了自己放那里了！相当不错！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             古***病
+          </span>
+          <span class="rvw">个人感觉颜值不错，<span style="color: rgba(210,105,30); ">空间足够使用</span>，很人性化，是否经久耐用还需要用一段时间再看。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             w***8
+          </span>
+          <span class="rvw">包做工不错，看着很漂亮，外出钓鱼用的，<span style="color: rgba(210,105,30); ">容量够大</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             血***满
+          </span>
+          <span class="rvw">背了几天了，包包的质量蛮好的，里面的空间也足够，装我的笔记本等配件，出差的换洗内衣没得问题。满意。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+              钢***2
+          </span>
+          <span class="rvw">质量非常好，<span style="color: rgba(210,105,30); ">容量很大</span>。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             久***凉
+          </span>
+          <span class="rvw">容量大小：整体来说还行，<span style="color: rgba(210,105,30); ">包容量比较大。</span><br>做工细节：包内隔层比较多，设计的比较实用，但唯一缺点是隔层袋无拉链。<br>舒适度：背起来还不错，刚使用几天，后面追评。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+              彭***H
+          </span>
+          <span class="rvw">不错，包包结实，背着很舒服。<span style="color: rgba(210,105,30); ">内部空间很大</span>，多个间隔。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             l***4
+          </span>
+          <span class="rvw">挺实用的，<span style="color: rgba(210,105,30); ">容量很大</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             A***C
+          </span>
+          <span class="rvw">新换的书包，<span style="color: rgba(210,105,30); ">容量超级大</span>，除了平时上班的时候背着以外，主要是带家里小朋友出去玩背小朋友的东西，相当于母婴包了，非常的不错，而且背着也很舒服，感觉不太重！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             他***屋
+          </span>
+          <span class="rvw">书包看起来还不错，<span style="color: rgba(210,105,30); ">空间很大</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             觅***z
+          </span>
+          <span class="rvw">面料材质：太棒了 滑滑防水面料很舒服 款式设计：时尚 容量大小：<span style="color: rgba(210,105,30); ">容量大很喜欢</span> 品质做工：品质精细</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             我***剑
+          </span>
+          <span class="rvw">包可以装很多东西 袋子也很深 摸起来很舒服</span>
+        </span>                                                                        
+        <span class="bottom">没有更多啦~</span>                
+      </div>
+
+      <!-- tag2 做工很好 33 -->
+      <div class="content">
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            我***西
+          </span>
+          <span class="rvw">买了两个都很好，大人小孩都可以背，<span style="color: rgba(210,105,30); ">质量非常好</span>。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             小***熙
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">背包质量不错</span>，面料做工都很精致，容量挺能装的。</span>
+        </span>              
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            来***汤
+          </span>
+          <span class="rvw">我很喜欢这个设计 <span style="color: rgba(210,105,30); ">商品质量不错</span>，细节、品质、做工都非常好，发货贼快，快递也给力，棒棒哒~</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            浅***田
+          </span>
+          <span class="rvw">容量很大，我买的是大号蓝色的，没有色差。<span style="color: rgba(210,105,30); ">做工很精致</span>，没有线头并且宽式也很好看，真心推荐。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            天***晴
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">质量特别出乎意料的好</span>，像帆布那种防雨的，一点也不显得廉价，这个颜色和款式孩子自己选了很多家对比，第一次发货因快递原因，卖家第一时间就重新补发啦，这样诚信店家一定可以做的更好。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            陈***i
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">质量不错</span>，而且买的17寸的也挺大的，装17的笔记本没问题，还能装好多衣服之类的。短途出差很OK，<span style="color: rgba(210,105,30); ">做工也很不错</span>，这个价位很值的。推荐购买。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            墨***靥
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">做工精细，质量不错</span>，空间也大，作为通勤包虽然买大了一号，不过也不违和，至少以后随身能带着运动鞋去上班了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            张***松
+          </span>
+          <span class="rvw">收到这个背包之后真的很惊喜，<span style="color: rgba(210,105,30); ">做工很精美</span>，材质很舒服，买了一个小容量的，出行放手机之类的刚刚好。拉链是在侧边，两侧都有，拿取东西，很方便，设计很喜欢！</span>
+        </span>                          
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            萨***3
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">背包质量很好</span>！就是买的这个尺寸有点太大了，正常背的话小号就行。容量当然是非常大的，能够装特别多东西，书包整体厚厚的，不过没有放行李箱上固定的带子。米白色很好看，就是容易脏，吃饭溅上油了呜呜呜。</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            z***宝
+          </span>
+          <span class="rvw">面料材质：尼龙 款式设计：运动 容量大小：大，可以放下A4 <span style="color: rgba(210,105,30); ">品质做工：无线头，比较细致</span> 整体来说我个人很喜欢，能装下大学英语书（大学算最大的书了）这点很满意，他是那种扁扁的那种包，对于一个学生来说虽然小贵，但是还是挺值的，我觉得可以放心冲</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            心***f
+          </span>
+          <span class="rvw">款式好看，材质很好，容量很大，<span style="color: rgba(210,105,30); ">做工精细</span>，喜欢</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            z***雪
+          </span>
+          <span class="rvw">好用，轻便，放书很多面料不错设计很好与介绍一样。<br>面料材质：结实<br>款式设计：好看好看<br>容量大小：大<br><span style="color: rgba(210,105,30); ">品质做工：很好没线头</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            相***业
+          </span>
+          <span class="rvw">包包有质感，<span style="color: rgba(210,105,30); ">做功精细防水</span>！能装很多东西，很喜欢！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            x***6
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">做工不错</span>，没发现什么瑕疵。放个14寸电脑刚刚好。希望能耐用一点。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            打***膜
+          </span>
+          <span class="rvw">面料厚实，<span style="color: rgba(210,105,30); ">做工精致</span>，很结实，肩带加宽加厚，书本多了也不勒肩，贼喜欢</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***3
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">做工质量不错</span>，好评</span>
+        </span>                                
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             w***8
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">包做工不错</span>，看着很漂亮，外出钓鱼用的，容量够大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            r***油
+          </span>
+          <span class="rvw">儿子看了很喜欢，质量很棒 <span style="color: rgba(210,105,30); ">做工还是比较细致的</span>。就是物流过程有小插曲 不过商家很快解决了。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***3
+          </span>
+          <span class="rvw">品质做工：<span style="color: rgba(210,105,30); ">做工很好</span>，比想象中的大好多，拉链也很顺畅</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            u***2
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">
+做工精细</span>，质量不错，空间也大，作为通勤包虽然买大了一号，不过也不违和，至少以后随身能带着运动鞋去上班了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            握***8
+          </span>
+          <span class="rvw">包容量大，<span style="color: rgba(210,105,30); ">做工细致</span>，分了几个口袋，便于收纳放物品，性价比不错</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***m
+          </span>
+          <span class="rvw">质量很好，<span style="color: rgba(210,105,30); ">拉链顺滑做工精细</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            乡***鸡
+          </span>
+          <span class="rvw">好起来质感还不错，比较厚实，应该是能防水<br>细节处理的很好，<span style="color: rgba(210,105,30); ">很细致</span>，很有质感，这个价格很值了，给老公买的他也喜欢，值得推荐</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            张***哥
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">细节到位</span>，质地柔软，实用！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            秦***关
+          </span>
+          <span class="rvw">产品与描述基本相符，手感不错，<span style="color: rgba(210,105,30); ">做工细致，没发现有线头</span></span>
+        </span>                                             
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             觅***z
+          </span>
+          <span class="rvw">面料材质：太棒了 滑滑防水面料很舒服<br>款式设计：时尚<br>容量大小：容量大很喜欢<br><span style="color: rgba(210,105,30); ">品质做工：品质精细</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***f
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">做工精细，没有多余线头</span>，看得出做工很下功夫，无论材质还是拉链、内层都做的很好，包整体看上去很有质感，休闲又商务，出差两三天用这个包完全够。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             j***运
+          </span>
+          <span class="rvw">感觉包包质量很好，<span style="color: rgba(210,105,30); ">做工精细</span>，款式简约大方，平整很漂亮，用一用再来评价</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            1***8
+          </span>
+          <span class="rvw">缓震海绵更好的保护电脑，细节很到位，满意，下次还会光顾的哈</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             吴***逆
+          </span>
+          <span class="rvw">款式商务好看，<span style="color: rgba(210,105,30); ">做工扎实</span>，好评</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            熊***大
+          </span>
+          <span class="rvw">空间不如想象那么大，但是还可以。作为电脑包足够了。<span style="color: rgba(210,105,30); ">质量，做工都很好</span>。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            s***9
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">包包做工精细</span>，面料很厚，尺寸大小正合适，外观简约大方，客服回复很快，很奈斯啊 背起来好好看 质量也不错 是有点麻布袋的质感 但是摸起来并不会有颗粒感 值得入手</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            L***2
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">做工精细</span>、容量大，手感舒服，非常不错。</span>
+        </span>
+        <span class="bottom">没有更多啦~</span>        
+      </div>
+
+      <!-- tag3 设计好看 26 -->
+      <div class="content">
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            醉***0
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">好看</span>，是我想要的样子，料子是那种滑滑的，整个包蛮大的，整体不错</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             书***你
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">很好看的小包</span>给女朋友买的她喜欢 里面还有小口袋正好能放下一个平板还蛮能装的 不错好评了希望店家能点赞</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            请***乐
+          </span>
+          <span class="rvw">双肩包很好，<span style="color: rgba(210,105,30); ">颜色也很好看</span>，容量也够大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            张***松
+          </span>
+          <span class="rvw">白色的很小清新，<span style="color: rgba(210,105,30); ">很好看</span>，给媳妇背的单母婴包是带点帆布的，<span style="color: rgba(210,105,30); ">感觉近距离看远距离看的话还挺好看</span>，入眼看的话感觉有点像米白色，没有那么白</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            蒲***1
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">白色很漂亮</span>，不是很白的颜色，是比较米白的颜色，重量很轻，容量大，可以装下很多东西，几十块的书包有这种质量真的很好，下次还买</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            回***空
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">样式很好看哦</span>，如果前面两个带子可以固定一下就更完美了。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            萨***3
+          </span>
+          <span class="rvw">背包质量很好！就是买的这个尺寸有点太大了，正常背的话小号就行。容量当然是非常大的，能够装特别多东西，书包整体厚厚的，不过没有放行李箱上固定的带子。<span style="color: rgba(210,105,30); ">米白色很好看</span>，就是容易脏，吃饭溅上油了呜呜呜。</span>
+        </span> 
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            昕***贝
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">颜值很高</span>，手感很好，只是12.9的pad带套之后放不进第二隔层。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            不***期
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">包很好看</span>，也实用，可以放手提，出外两三天背这个刚刚好。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            呼***力
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">包包很帅气很好看</span>，质量非常好，容量特大能装开大课本出乎我的意料，包装非常仔细，还送了小徽章！非常感谢，祝生意兴隆！！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***E
+          </span>
+          <span class="rvw">这个背包手感很好很轻，<span style="color: rgba(210,105,30); ">颜值高</span>，买来作为员工活动奖品。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            番***付
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">太好看了</span>，性价比超高</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            黄***梗
+          </span>
+          <span class="rvw">感觉蛮好的，刚收到还没背，容量挺大的，<span style="color: rgba(210,105,30); ">设计也不错</span>，等背了之后有什么再说吧。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             j***c
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">书包挺漂亮</span>，大小正合适</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            焰***尘
+          </span>
+          <span class="rvw">特别好真的很好看哈哈哈哈哈</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             此***在
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">背包的样式还比较耐看的</span>，质量的话需要背一段时间来检验了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***n
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">挺好看的</span>，感觉个人特别喜欢，所以给了5颗好星</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            止***儿
+          </span>
+          <span class="rvw">孩子自己挑的款式，<span style="color: rgba(210,105,30); ">很好看</span>。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             W***丶
+          </span>
+          <span class="rvw">挺好，就是夏天背着有点热，做工还可以，侧兜太浅了，装水杯和雨伞动作大点容易掉，希望改进吧。<br><span style="color: rgba(210,105,30); ">外观颜值：挺好</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            缘***1
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">包包很好看</span>，像个1000块钱的</span>
+        </span>                                        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            z***雪
+          </span>
+          <span class="rvw">好用，轻便，放书很多面料不错设计很好与介绍一样。<br>面料材质：结实<br><span style="color: rgba(210,105,30); ">款式设计：好看好看</span><br>容量大小：大<br>品质做工：很好没线头</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            凌***风
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">背包很好看</span>，背起来很舒适，唯一缺点就是扣子太多了，每次不扣会很强迫症给他扣起来了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            第***明
+          </span>
+          <span class="rvw">真不错，也不贵，<span style="color: rgba(210,105,30); ">还挺好看的</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            因***4
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">外观好看</span>、大气。书包很结实，夹层和口袋多而不乱，背重物比较轻松。留有usb接口和电脑夹层，分门别类非常方便。使用一周后感觉很好，性价比很高。</span>
+        </span>                
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             觅***z
+          </span>
+          <span class="rvw">面料材质：太棒了 滑滑防水面料很舒服 <span style="color: rgba(210,105,30); ">款式设计：时尚</span> 容量大小：容量大很喜欢 品质做工：品质精细</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            我***西
+          </span>
+          <span class="rvw">很棒很棒，本来觉得有点丑，但到手真香了，嘿嘿嘿，比图片上好看，多功能背包，不会太大颜值高，背电脑没问题</span>
+        </span>
+        <span class="bottom">没有更多啦~</span>        
+      </div>      
+
+      <!-- tag4 功能齐全 18 -->
+      <div class="content">
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             深***鱼
+          </span>
+          <span class="rvw">背起来还行，<span style="color: rgba(210,105,30); ">功能比较全</span>。外观一般，不够商务</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            郝***佳
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">功能设计很齐全</span>，想得也很很齐全，可以干湿分离，侧面的袋子放容易洒出来的水和湿的雨伞一点问题都没有！内袋里面也有一个隔离层可以干湿分离，<span style="color: rgba(210,105,30); ">在干湿分离和功能齐全方面可谓做到极致了</span>，但是，真的空包背起来就很大了。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            徐***0
+          </span>
+          <span class="rvw">这个包百元左右性价无敌 做工 外观 隔位 都超级好 布料摸着很舒服 <span style="color: rgba(210,105,30); ">干湿分离区</span> 左右两侧可以放杯子和雨伞 都有保温层 肩带厚实 背着舒服不累 空间的话也很能装 短途旅行或出差必备 强烈推荐</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            卤***条
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">功能齐全容量大</span>，很适合城市通勤。就是背带再舒服点就好了，面料稍微有点滑~</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            平***u
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">功能划分比较丰富</span>，出差要带笔记本应该会比较好用，送货很快，早上买晚上就送到了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            王***惠
+          </span>
+          <span class="rvw">能装，口袋多，<span style="color: rgba(210,105,30); ">功能多</span>，干湿分离，隔温层口袋，做工可以，价格还实惠，值得推荐。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            抱***灭
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">背包的功能很多</span>，有好多分仓，笔记本电脑可以单独存放，还有保护棉。放衣服的有3层，干净和换洗的可以分开存放。眼镜盒，水杯，雨伞都可以单独存放。最外面还有个小的，可以放些票据。非常棒。。</span>
+        </span>                                        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            爱***虫
+          </span>
+          <span class="rvw">外观看着很好 <span style="color: rgba(210,105,30); ">功能比较全面</span>，暂时还没有用，使用后看效果</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            公***y
+          </span>
+          <span class="rvw">挺好用的，最外面一层容量非常大放两个快递盒都可以，另外两层不是很大，但是够日常使用了，放电脑的夹层做了一定的缓冲保护。寄来有一点异味，放了一两天就可以正常使用了，目前用着没什么问题。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            陈***8
+          </span>
+          <span class="rvw">背包手感不错，挺结实的，没发现线头，容量大，分格多，<span style="color: rgba(210,105,30); ">功能齐全</span>，两边放水杯还保温，短期出差一个这背包就够了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            假***人
+          </span>
+          <span class="rvw">很不错，买的小号担心买小了，结果背起来很合适，好多内袋和隔层，容量杠杠的，质量也没得说</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            握***8
+          </span>
+          <span class="rvw">包容量大，做工细致，分了几个口袋，便于收纳放物品，性价比不错</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             4***航
+          </span>
+          <span class="rvw">背着舒服，<span style="color: rgba(210,105,30); ">该有的功能全用上了</span>，方便好用。空间也很大，能装几套衣服，加一双鞋，还有随时用的小东西，口袋多，也不怕东西装得乱七八糟，装东西分开装，找东西就很好找</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            暴***生
+          </span>
+          <span class="rvw">空间大，款型好看，<span style="color: rgba(210,105,30); ">功能性拉满</span>。很喜欢</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            记***子
+          </span>
+          <span class="rvw">背包空间很大，不同区域划分的也很多，很能装。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            因***4
+          </span>
+          <span class="rvw">外观好看、大气。书包很结实，夹层和口袋多而不乱，背重物比较轻松。留有usb接口和电脑夹层，分门别类非常方便。使用一周后感觉很好，性价比很高。</span>
+        </span>      
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            晨***递
+          </span>
+          <span class="rvw">很完美的背包了，<span style="color: rgba(210,105,30); ">该有的功能全都有</span>，甚至还给配了一条数据线用于连接充电宝的。完美😍</span>
+        </span> 
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***c
+          </span>
+          <span class="rvw">很时尚，<span style="color: rgba(210,105,30); ">功能多</span>。缺陷是太重了</span>
+        </span>         
+        <span class="bottom">没有更多啦~</span>                
+      </div>
+
+      <!-- tag5 结实耐用 25 -->
+      <div class="content">
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            郭***3
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">这个包用料很扎实</span>，分层很多，放东西应该比较方便，两边还有防水的袋子可以拿来装水杯，就是因为用料比较扎实，所以自重重一点，这一点买的时候要考虑好</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            我***啦
+          </span>
+          <span class="rvw">还可以还可以，包包比较耐看，<span style="color: rgba(210,105,30); ">比较结实</span>。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            楽***-
+          </span>
+          <span class="rvw">不错挺帅的，<span style="color: rgba(210,105,30); ">包装还挺结实的</span>。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            宁***挞
+          </span>
+          <span class="rvw">虽然有点贵吧。不过还是喜欢这样的设计。<span style="color: rgba(210,105,30); ">里面的用料也比较结实</span>。特别是那层网。不会轻易破</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            兮***呀
+          </span>
+          <span class="rvw">喜欢这个包！很大很好用！<span style="color: rgba(210,105,30); ">很结实</span>！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            真***嗒
+          </span>
+          <span class="rvw">很厚实，电脑装进去不怕磕碰，<span style="color: rgba(210,105,30); ">背带连接处很结实</span>，没有多余的线头，没有什么气味，拉链很丝滑</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            绍***希
+          </span>
+          <span class="rvw">第二次购买，我自己买的那个黑色用了很久了，这回给我弟也整一个，<span style="color: rgba(210,105,30); ">使用感特别好肩带很结实质量超级nice</span>，而且面料很耐脏好清理不需要清洗，湿巾擦拭就好了，容量也足够（来自我弟一个高三生的认可）</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            二***酱
+          </span>
+          <span class="rvw">这个包包是真的好，<span style="color: rgba(210,105,30); ">面料结实耐磨</span>，质量特别好，容量很大，夏季衣服没问题！外观挺好看的，纯色简约大方百搭，包包特别有质感，摸起来很舒服，做工挺精细，设计很人性化，材料和做工都特别精致，做工真的非常棒，我觉着我可以推荐给我朋友买</span>
+        </span>                                        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            陈***8
+          </span>
+          <span class="rvw">背包手感不错，<span style="color: rgba(210,105,30); ">挺结实的</span>，没发现线头，容量大，分格多，功能齐全，两边放水杯还保温，短期出差一个这背包就够了</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            勇***羊
+          </span>
+          <span class="rvw">方便携带，<span style="color: rgba(210,105,30); ">也还算结实</span>，收纳也很方便。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             夹***唐
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">背包很结实</span>，装的东西很多。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            因***4
+          </span>
+          <span class="rvw">外观好看、大气。<span style="color: rgba(210,105,30); ">书包很结实</span>，夹层和口袋多而不乱，背重物比较轻松。留有usb接口和电脑夹层，分门别类非常方便。使用一周后感觉很好，性价比很高。</span>
+        </span>            
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***7
+          </span>
+          <span class="rvw">还不错，<span style="color: rgba(210,105,30); ">感觉很结实</span>。也能装东西</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            佛***佩
+          </span>
+          <span class="rvw">很好用，<span style="color: rgba(210,105,30); ">主要是比较牢固</span>，相信能用很长时间</span>
+        </span>                
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+              彭***H
+          </span>
+          <span class="rvw">不错，<span style="color: rgba(210,105,30); ">包包结实</span>，背着很舒服。内部空间很大，多个间隔。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            M***o
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">背包口袋很多很结实。</span></span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            玥***8
+          </span>
+          <span class="rvw">包包外观和内分是符合想法和要求，装电脑后面有厚厚的减震扛摔设计，还能装一些几天出差的衣服，那个USB口还不知如何用，最后就看带子连接出老实不，会不会开线或开胶。暂时满意满意！</span>
+        </span>        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            大***爸
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">收到的书包面料很结实</span>！这个容量大小完全够用。没有线头，面料是防水的尼龙的材料！ 背着很是时尚好看！超级满意!</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            g***i
+          </span>
+          <span class="rvw">做工精细，<span style="color: rgba(210,105,30); ">布料结实耐用</span>，小件用料扎实，是正品。非常能装，不显大，30斤东西背上去感觉很轻快。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            曾***3
+          </span>
+          <span class="rvw">两年前买过一次 这个包 <span style="color: rgba(210,105,30); ">很结实</span> 背着也很舒服</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            w***1
+          </span>
+          <span class="rvw">包很好，<span style="color: rgba(210,105,30); ">皮实耐用</span>，就是比原来的包小了点，建议选大号的</span>
+        </span>                                       
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            z***雪
+          </span>
+          <span class="rvw">好用，轻便，放书很多面料不错设计很好与介绍一样。<br><span style="color: rgba(210,105,30); ">面料材质：结实</span><br>款式设计：好看好看<br>容量大小：大<br>品质做工：很好没线头</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***y
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">包包很结实</span>，很实用，挺好的</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            酱***啊
+          </span>
+          <span class="rvw">容量大特别能装，<span style="color: rgba(210,105,30); ">耐用</span>，不容易脏</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            0***0
+          </span>
+          <span class="rvw">快递包装很好，用了2层包装袋。书包里面分了很多层，便于放不同的东西，有一个专门的笔记本电脑层，很方便。<span style="color: rgba(210,105,30); ">书包布料很好很结实</span>，背着合身，使用了三周，体验很好。</span>
+        </span>
+        <span class="bottom">没有更多啦~</span>        
+      </div>
+
+      <!-- tag6 防水性强 19 -->
+      <div class="content">
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            若***谷
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">背包的面料防水的</span>，质量看着还可以</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            彩***8
+          </span>
+          <span class="rvw">很实用，空间很大，<span style="color: rgba(210,105,30); ">布料是防水的</span>，出门用很方便</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            喜***姐
+          </span>
+          <span class="rvw">容量真的很大，还可以有充电孔，背着也很舒服，<span style="color: rgba(210,105,30); ">外面是防水材质</span>，质量真的很好，颜值真的很高，物流真的很给力，昨天拍今天就到了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            天***晴
+          </span>
+          <span class="rvw">质量特别出乎意料的好，<span style="color: rgba(210,105,30); ">像帆布那种防雨的</span>，一点也不显得廉价，这个颜色和款式孩子自己选了很多家对比，第一次发货因快递原因，卖家第一时间就重新补发啦，这样诚信店家一定可以做的更好。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            岭***雁
+          </span>
+          <span class="rvw">这个包设计非常合理，具有多层结构。特别贴心的装眼镜和电脑的地方都是绒布保护。中间可以完全平放打开，侧面带有保温层，<span style="color: rgba(210,105,30); ">并且防水</span>。整体做工非常结实。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            灰***谱
+          </span>
+          <span class="rvw">质感不错，能装下挺多东西，<span style="color: rgba(210,105,30); ">还防水</span>。已经背了半个多月了，就是里面异味有点大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            瓜***3
+          </span>
+          <span class="rvw">同事推荐，平时出差使用，包很能装，<span style="color: rgba(210,105,30); ">而且可以防泼溅，下雨也不害怕</span>，前前后后买了3个，还送了鞋套和杯套，外观纯黑还蛮酷的，不错</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            爱***乐
+          </span>
+          <span class="rvw">质感不错，<span style="color: rgba(210,105,30); ">还防水</span> 淋着雨回来里面都是干的</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            大***爸
+          </span>
+          <span class="rvw">收到的书包面料很结实！这个容量大小完全够用。没有线头，<span style="color: rgba(210,105,30); ">面料是防水的尼龙的材料</span>！ 背着很是时尚好看！超级满意!</span>
+        </span>                                                                
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            橙***汁
+          </span>
+          <span class="rvw">收到货了，很好，大小刚刚好，简洁大气，款式很有简约，是我喜欢的样子，包包很精致，<span style="color: rgba(210,105,30); ">防水面料，布料是防水的</span>，终于买到一款自己喜欢的包包啦，很棒哦</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            t***鱼
+          </span>
+          <span class="rvw">背包做工精致，<span style="color: rgba(210,105,30); ">面料防水</span>，背带加宽设计，背着舒服。三层设计，外出携带东西可以分类存放。外观漂亮，容量较大，另有USB外部插口，方便充电。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            R***p
+          </span>
+          <span class="rvw">质感非常好，<span style="color: rgba(210,105,30); ">分区明确还防水</span>，性价比高</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            木***由
+          </span>
+          <span class="rvw">非常好，放水，背起来舒服</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            z***9
+          </span>
+          <span class="rvw">容量大小：书包空间比较大，很好用<br>实用性能：<span style="color: rgba(210,105,30); ">防水性能给力</span></span>
+        </span>                        
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             觅***z
+          </span>
+          <span class="rvw">面料材质：太棒了 <span style="color: rgba(210,105,30); ">滑滑防水面料很舒服</span> 款式设计：时尚 容量大小：容量大很喜欢 品质做工：品质精细</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             孔***7
+          </span>
+          <span class="rvw">背包外观好看，功能多样，<span style="color: rgba(210,105,30); ">内有隔层防水性好</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            常***霸
+          </span>
+          <span class="rvw">容量大小：大小基本够用吧，平时当个通勤包很不错<br>做工细节：做工没的说，<span style="color: rgba(210,105,30); ">面料应该是比较耐刮防水的</span>，蹭脏了用湿毛巾擦一下就好了<br>外观颜值：颜值是真的喜欢，很板正<br>实用性能：磁吸卡扣点个赞</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            暮***风
+          </span>
+          <span class="rvw">书包很好用，容量很大，<span style="color: rgba(210,105,30); ">还防水</span>。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            j***H
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">面料防水效果好</span>，摸着感觉很结实耐用，孩子自己挑的这款，容量很大，初中带的书都够放的，肩带加宽设计，背着不勒，肩带的手提都有加固，很结实，两侧有设计可以放水壶雨伞的侧口袋，有抽绳可固定，对于书本多的学生来说，真的是很实用，总之，很满意的一次购物</span>
+        </span>                        
+        <span class="bottom">没有更多啦~</span>        
+      </div>
+
+      <!-- tag7 款型极佳 11 -->
+      <div class="content">
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             周***户
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">没想到很有型</span>，做工样式没得说，功能强大，居然配有独立洗漱包（小的包好像是😶），虽然不是机车男，但是出差游玩够用确实好看</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            逄***臻
+          </span>
+          <span class="rvw">发货快，质量很好，<span style="color: rgba(210,105,30); ">款式时尚大方</span>，颜色正，背起来很好看</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            张***松
+          </span>
+          <span class="rvw">白色的很小清新，很好看，给媳妇背的单母婴包是带点帆布的，感觉近距离看远距离看的话还挺好看，入眼看的话感觉有点像米白色，没有那么白</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            茶***东
+          </span>
+          <span class="rvw">比想象的更好，<span style="color: rgba(210,105,30); ">更高档</span>，每一处都很完美，口袋很多。</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            池***笙
+          </span>
+          <span class="rvw">设计确实很OK <span style="color: rgba(210,105,30); ">质感满满</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            寒***明
+          </span>
+          <span class="rvw">挺好的，大小宽厚刚合适，虽然看着不是很大，但挺能装东西，而且装完之后也没有鼓鼓囊囊的感觉，<span style="color: rgba(210,105,30); ">挺有型的</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            沃***兰
+          </span>
+          <span class="rvw">双肩包很好看，<span style="color: rgba(210,105,30); ">看着很有质感，拎着很有档次</span>，颜色也很漂亮，老公很喜欢，好评！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            风***由
+          </span>
+          <span class="rvw">想买的别犹豫哇！<span style="color: rgba(210,105,30); ">没有廉价的感觉，很高端</span>，特别棒！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            夏***梦
+          </span>
+          <span class="rvw">非常好，<span style="color: rgba(210,105,30); ">背包很高大上</span>，质量很好，之前买了一个送给了哥哥背，哥哥非常喜欢，我也很喜欢，所以就又买了一个，给弟弟质量不错，少有线头，容量也很大，很适合学生党，旅游党。<span style="color: rgba(210,105,30); ">看上去就给人一种高级感</span>，价格也合适，这次网购很愉快，大赞</span>
+        </span>                                                                
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            灰***谱
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">质感不错</span>，能装下挺多东西，还防水。已经背了半个多月了，就是里面异味有点大</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             j***林
+          </span>
+          <span class="rvw">质感不错挺好的。还有usb口。方便使用。包不塌。<span style="color: rgba(210,105,30); ">挺阔有型</span>。</span>
+        </span>        
+        <span class="bottom">没有更多啦~</span>     
+      </div>
+
+      <!-- tag8 性价比低 7 -->
+      <div class="content">
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+             华***南
+          </span>
+          <span class="rvw">包包容量很大，也好看，但是感觉布料质量有点配不上这个价格，摸起来比较粗糙，<span style="color: rgba(210,105,30); ">贵了</span>，谨慎购买</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            刘***4
+          </span>
+          <span class="rvw">包还不错，不过就价格而言，<span style="color: rgba(210,105,30); ">性价比一般</span>！</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            月***清
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">不太值这个价</span>，调节绳有点长了，不太方便调，防水效果也不是很好</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            赚***光
+          </span>
+          <span class="rvw">没有想像中好，<span style="color: rgba(210,105,30); ">物不所值</span></span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            黄***1
+          </span>
+          <span class="rvw">这质量我也没法说了，连50的书包也不如</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            明***下
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">质量和价格不符</span>，第一次背，拉链就开了</span>
+        </span>
+        <span class="reviews">
+          <span class="customer">
+            <img src="https://misc.360buyimg.com/user/myjd-2015/css/i/peisong.jpg" />
+            强***冲
+          </span>
+          <span class="rvw"><span style="color: rgba(210,105,30); ">价格太高 根本不值这个价</span> 布料很差 容量还小</span>
+        </span>                                                                
+        <span class="bottom">没有更多啦~</span>        
+      </div>
+
+    </div>
+
+   	 <!-- JS -->
+    <script type="text/javascript">
+      var pages = document.querySelectorAll('.page');
+      var prevBtn = document.getElementById('prevBtn');
+      var nextBtn = document.getElementById('nextBtn');
+      var currentPageIndex = 0;
+      function showPage(index) {
+      pages[currentPageIndex].classList.remove('active');
+      pages[currentPageIndex].classList.remove('transition');
+      pages[index].classList.add('active');
+      pages[index].classList.add('transition');
+      currentPageIndex = index;
+      }
+      prevBtn.addEventListener('click', function() {
+      var prevPageIndex = currentPageIndex - 1;
+      if (prevPageIndex < 0) {
+      prevPageIndex = pages.length - 1;
+      }
+      showPage(prevPageIndex);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      });
+      nextBtn.addEventListener('click', function() {
+      var nextPageIndex = currentPageIndex + 1;
+      if (nextPageIndex >= pages.length) {
+      nextPageIndex = 0;
+      }
+      showPage(nextPageIndex);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      });
+      showPage(currentPageIndex);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+
+
+
+
+  	 	var tags = document.getElementsByClassName("tag");
+  	 	var contents = document.getElementsByClassName("content");
+      // tags.unshift(0);
+  	 	for (var i=0; i<tags.length; i++) {
+  	 		tags[i].index = i;
+        tags[i].onclick = function(){
+
+          if (this.className=="tag active" || this.className=="tag neg active" ) {
+            this.className = this.className.replace(' active', '').trim();
+            contents[this.index+1].className = contents[this.index+1].className.replace(' show', '').trim();
+            contents[0].className = contents[0].className + ' show';
+          }else{
+           for (var j=0; j<tags.length; j++) {
+            tags[j].className= tags[j].className.replace(' active', '').trim();
+            contents[0].className = contents[0].className.replace(' show', '').trim();
+            // contents[j].className = contents[j].className.replace(' show', '').trim();
+            contents[j+1].className = contents[j+1].className.replace(' show', '').trim();
+          }         
+            this.className = this.className + ' active';
+            contents[this.index+1].className = contents[this.index+1].className + ' show';
+          }
+          
+        };
+
+  	 	};
+ 	 	
+  	</script>
+  </body>
+</html>
